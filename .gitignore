@@ -1,0 +1,17 @@
+# Logs
+*.log
+
+# Evn variables
+.env
+
+# Visual Studio Code
+.vscode
+
+# Dependency directories
+node_modules
+
+# MacOS DS Store
+.DS_Store
+
+# Build folder
+lib
