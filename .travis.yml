@@ -1,0 +1,15 @@
+after_script: greenkeeper-lockfile-upload
+before_install: yarn global add greenkeeper-lockfile@1
+before_script: greenkeeper-lockfile-update
+branches:
+  only:
+    - master
+    - /^greenkeeper/.*$/
+cache: yarn
+language: node_js
+node_js:
+  - "10.0"
+notifications:
+  slack: cards-corp:NJt6wNBjKHUWl15RMjvGRbcA
+script:
+  - npm run build
