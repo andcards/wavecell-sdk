@@ -16,7 +16,7 @@ describe("otp-code-send", () => {
     after(() => {
       nock.cleanAll();
     });
-    it("should pass", done => {
+    it("should reply with json object from wavecell API response", done => {
       otpCodeSend(
         "+1555333222",
         { source: "templateSource", text: "sms text" },
@@ -28,10 +28,7 @@ describe("otp-code-send", () => {
       )
         .then(response => {
           expect(response).to.deep.equal({
-            rawResponse: {
-              resourceUri: "/bar"
-            },
-            verifyUrl: `https://api.wavecell.com/bar`
+            resourceUri: "/bar"
           });
           done();
         })

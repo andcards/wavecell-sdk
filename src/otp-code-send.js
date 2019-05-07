@@ -10,7 +10,7 @@ const DEFAULT_OPTIONS = {
   resendingInterval: 15
 };
 /**
- * Send otp code to phone number
+ * Send otp code to phone number.
  *
  * @param {string} phoneNumber - Destination phone number.
  * @param {string} smsTemplate.source - Used as senderID.
