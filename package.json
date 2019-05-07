@@ -2,20 +2,30 @@
   "name": "wavecell-sdk",
   "version": "0.0.1",
   "description": "Javascript SDK for Wavecell",
+  "keywords": [
+    "wavecell",
+    "sdk"
+  ],
   "author": {
     "email": "oleksandrprohr@gmail.com",
     "name": "Oleksandr Prokhorov"
   },
   "scripts": {
-    "build": "rm -rf ./lib && babel src --out-dir lib",
+    "clean": "rimraf lib",
     "lint": "eslint src",
-    "test": "mocha ./__tests__ --recursive --require @babel/register --exit"
+    "test": "mocha ./__tests__ --recursive --require @babel/register --exit",
+    "build": "npm run lint && npm test && npm run clean && babel src --out-dir lib"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:andcards/wavecell-sdk.git"
   },
   "files": [
     "lib"
   ],
   "main": "lib/index.js",
-  "license": "MIT",
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
@@ -31,6 +41,5 @@
     "mocha": "^6.1.4",
     "nock": "^10.0.6",
     "prettier": "^1.17.0"
-  },
-  "dependencies": {}
+  }
 }

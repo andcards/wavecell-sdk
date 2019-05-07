@@ -10,7 +10,7 @@ describe("constants", () => {
       expect(VERIFICATION_STATUS).to.have.property("VERIFIED", "VERIFIED");
     });
     it("should have FAILED constant", () => {
-      expect(VERIFICATION_STATUS).to.have.property("WAITING", "FAILED");
+      expect(VERIFICATION_STATUS).to.have.property("FAILED", "FAILED");
     });
     it("should have EXPIRED constant", () => {
       expect(VERIFICATION_STATUS).to.have.property("EXPIRED", "EXPIRED");
