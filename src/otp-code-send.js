@@ -1,4 +1,5 @@
 import { request } from "https";
+import { WAVECELL_DOMAIN_BASE } from "./constants";
 
 const WAVECELL_INVALID_MSDSN_ERROR_CODE = 1002;
 
@@ -67,7 +68,7 @@ export default (phoneNumber, smsTemplate, accountConfig, options = {}) => {
           Authorization: `Basic ${authorizationBasic}`,
           "Content-Type": "application/json"
         },
-        hostname: "api.wavecell.com",
+        hostname: WAVECELL_DOMAIN_BASE,
         method: "POST",
         path: `/verify/v1/${subAccountId}`
       },

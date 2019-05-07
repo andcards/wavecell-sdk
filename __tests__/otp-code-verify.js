@@ -1,14 +1,17 @@
 import { expect } from "chai";
 import nock from "nock";
-import { otpCodeValidate } from "../src";
+import { otpCodeVerify } from "../src";
 
-describe("otp-code-validate", () => {
-  describe("otpCodeValidate: valid parameters", () => {
+describe("otp-code-verify", () => {
+  describe("otpCodeVerify: valid parameters", () => {
     const accountId = "accountId";
     const resourceUri = "/foo";
     before(() => {
       nock("https://api.wavecell.com")
         .get(resourceUri)
+        .query({
+          code: "1412"
+        })
         .reply(200, {
           bar: "baz"
         });
@@ -17,7 +20,7 @@ describe("otp-code-validate", () => {
       nock.cleanAll();
     });
     it("should return json object from wavecell API response", done => {
-      otpCodeValidate("1412", resourceUri, {
+      otpCodeVerify("1412", resourceUri, {
         accountId,
         password: "qwerty"
       })

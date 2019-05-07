@@ -1,4 +1,5 @@
 import { request } from "https";
+import { WAVECELL_DOMAIN_BASE } from "./constants";
 
 /**
  * Validate otp code.
@@ -27,9 +28,9 @@ export default (otp, resourceUri, accountConfig) => {
         headers: {
           Authorization: `Basic ${authorizationBasic}`
         },
-        hostname: "api.wavecell.com",
+        hostname: WAVECELL_DOMAIN_BASE,
         method: "GET",
-        path: resourceUri
+        path: `${resourceUri}?code=${otp}`
       },
       response => {
         const contentType = response.headers["content-type"];
