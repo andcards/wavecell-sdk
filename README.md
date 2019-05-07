@@ -74,8 +74,8 @@ otpCodeSend("+3809399927332", smsTemplate, accountConfig).then(response => {
 
 #### Response
 
-Resolves with object, same to response body of Wavecell API
-(https://developer.wavecell.com/v1/api-documentation/verify-code-generation).
+Resolves with object, same to response body of Wavecell API.
+https://developer.wavecell.com/v1/api-documentation/verify-code-generation.
 
 ### otpCodeVerify(otp, resourceUri, accountConfig)
 
@@ -114,7 +114,7 @@ otpCodeVerify(otp, resourceUri, accountConfig).then(response => {
 #### Response
 
 Resolves with object, same to response body of Wavecell API.
-(https://developer.wavecell.com/v1/api-documentation/verify-code-generation)
+https://developer.wavecell.com/v1/api-documentation/verify-code-generation.
 
 ### License
 

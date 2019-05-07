@@ -4,7 +4,9 @@
   "description": "Javascript SDK for Wavecell",
   "keywords": [
     "wavecell",
-    "sdk"
+    "sdk",
+    "sms",
+    "verification"
   ],
   "author": {
     "email": "oleksandrprohr@gmail.com",
