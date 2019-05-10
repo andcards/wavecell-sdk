@@ -10,6 +10,7 @@ const DEFAULT_OPTIONS = {
   createNew: true,
   resendingInterval: 15
 };
+
 /**
  * Send otp code to phone number.
  *
