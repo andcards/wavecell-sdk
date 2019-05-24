@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import nock from "nock";
 import { otpCodeVerify } from "../src";
-import AuthError from "../src/errors/auth-error";
 import { AUTH_ERROR_TYPE } from "../src/constants/error-types";
 
 describe("otp-code-verify", () => {
@@ -34,7 +33,7 @@ describe("otp-code-verify", () => {
           .catch(done);
       });
     });
-    it("should reject with AuthError if account id is not specified", done => {
+    it("should reject with AUTH_ERROR_TYPE if account id is not specified", done => {
       otpCodeVerify("1111", "/foo", {
         password: "qwerty"
       })
@@ -43,7 +42,6 @@ describe("otp-code-verify", () => {
         })
         .catch(error => {
           try {
-            expect(error.constructor).to.be.equal(AuthError);
             expect(error.type).to.be.equal(AUTH_ERROR_TYPE);
             expect(error.message).to.be.equal("Missing accountId.");
           } catch (catchError) {
@@ -53,7 +51,7 @@ describe("otp-code-verify", () => {
           done();
         });
     });
-    it("should reject with AuthError if password is not specified", done => {
+    it("should reject with AUTH_ERROR_TYPE if password is not specified", done => {
       otpCodeVerify("1111", "/foo", {
         accountId: "accountId"
       })
@@ -62,7 +60,6 @@ describe("otp-code-verify", () => {
         })
         .catch(error => {
           try {
-            expect(error.constructor).to.be.equal(AuthError);
             expect(error.type).to.be.equal(AUTH_ERROR_TYPE);
             expect(error.message).to.be.equal("Missing password.");
           } catch (catchError) {

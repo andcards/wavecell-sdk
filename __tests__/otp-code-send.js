@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import nock from "nock";
 import { otpCodeSend } from "../src";
-import AuthError from "../src/errors/auth-error";
 import { AUTH_ERROR_TYPE } from "../src/constants/error-types";
 
 describe("otp-code-send", () => {
@@ -36,7 +35,7 @@ describe("otp-code-send", () => {
           .catch(done);
       });
     });
-    it("should reject with AuthError if account id is not specified", done => {
+    it("should reject with AUTH_ERROR_TYPE if account id is not specified", done => {
       otpCodeSend(
         "+1555333222",
         { source: "templateSource", text: "sms text" },
@@ -50,7 +49,6 @@ describe("otp-code-send", () => {
         })
         .catch(error => {
           try {
-            expect(error.constructor).to.be.equal(AuthError);
             expect(error.type).to.be.equal(AUTH_ERROR_TYPE);
             expect(error.message).to.be.equal("Missing accountId.");
           } catch (catchError) {
@@ -60,7 +58,7 @@ describe("otp-code-send", () => {
           done();
         });
     });
-    it("should reject with AuthError if password is not specified", done => {
+    it("should reject with AUTH_ERROR_TYPE if password is not specified", done => {
       otpCodeSend(
         "+1555333222",
         { source: "templateSource", text: "sms text" },
@@ -74,7 +72,6 @@ describe("otp-code-send", () => {
         })
         .catch(error => {
           try {
-            expect(error.constructor).to.be.equal(AuthError);
             expect(error.type).to.be.equal(AUTH_ERROR_TYPE);
             expect(error.message).to.be.equal("Missing password.");
           } catch (catchError) {
@@ -84,7 +81,7 @@ describe("otp-code-send", () => {
           done();
         });
     });
-    it("should reject with AuthError if sub account id is not specified", done => {
+    it("should reject with AUTH_ERROR_TYPE if sub account id is not specified", done => {
       otpCodeSend(
         "+1555333222",
         { source: "templateSource", text: "sms text" },
@@ -98,7 +95,6 @@ describe("otp-code-send", () => {
         })
         .catch(error => {
           try {
-            expect(error.constructor).to.be.equal(AuthError);
             expect(error.type).to.be.equal(AUTH_ERROR_TYPE);
             expect(error.message).to.be.equal("Missing subAccountId.");
           } catch (catchError) {
