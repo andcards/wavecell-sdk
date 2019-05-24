@@ -1,5 +1,6 @@
 import { request } from "https";
-import { WAVECELL_DOMAIN_BASE } from "./constants";
+import { WAVECELL_DOMAIN_BASE } from "./constants/wavecell-api-urls";
+import AuthError from "./errors/auth-error";
 
 const WAVECELL_INVALID_MSDSN_ERROR_CODE = 1002;
 
@@ -24,13 +25,13 @@ const DEFAULT_OPTIONS = {
 function otpCodeSend(phoneNumber, smsTemplate, accountConfig, options = {}) {
   const { accountId, password, subAccountId } = accountConfig;
   if (!accountId) {
-    return Promise.reject(new Error("Missing accountId."));
+    return Promise.reject(new AuthError("Missing accountId."));
   }
   if (!password) {
-    return Promise.reject(new Error("Missing password."));
+    return Promise.reject(new AuthError("Missing password."));
   }
   if (!subAccountId) {
-    return Promise.reject(new Error("Missing subAccountId."));
+    return Promise.reject(new AuthError("Missing subAccountId."));
   }
   const {
     codeLength,
