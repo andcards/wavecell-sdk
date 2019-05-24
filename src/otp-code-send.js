@@ -1,8 +1,12 @@
 import { request } from "https";
-import { AUTH_ERROR_TYPE } from "./constants/error-types";
+import {
+  AUTH_FAILED_ERROR_TYPE,
+  DESTINATION_NOT_VALID_ERROR_TYPE,
+  SMS_TEMPLATE_NOT_VALID_ERROR_TYPE,
+  CONTENT_TYPE_NOT_VALID_ERROR_TYPE
+} from "./constants/error-types";
 import { WAVECELL_DOMAIN_BASE } from "./constants/wavecell-api-urls";
-
-const WAVECELL_INVALID_MSDSN_ERROR_CODE = 1002;
+import getErrorFromRawResponse from "./utils/get-error-from-raw-response";
 
 const DEFAULT_OPTIONS = {
   codeLength: 4,
@@ -26,17 +30,37 @@ function otpCodeSend(phoneNumber, smsTemplate, accountConfig, options = {}) {
   const { accountId, password, subAccountId } = accountConfig;
   if (!accountId) {
     const error = new Error("Missing accountId.");
-    error.type = AUTH_ERROR_TYPE;
+    error.type = AUTH_FAILED_ERROR_TYPE;
     return Promise.reject(error);
   }
   if (!password) {
     const error = new Error("Missing password.");
-    error.type = AUTH_ERROR_TYPE;
+    error.type = AUTH_FAILED_ERROR_TYPE;
     return Promise.reject(error);
   }
   if (!subAccountId) {
     const error = new Error("Missing subAccountId.");
-    error.type = AUTH_ERROR_TYPE;
+    error.type = AUTH_FAILED_ERROR_TYPE;
+    return Promise.reject(error);
+  }
+  if (!phoneNumber) {
+    const error = new Error("Missing phone number.");
+    error.type = DESTINATION_NOT_VALID_ERROR_TYPE;
+    return Promise.reject(error);
+  }
+  if (!smsTemplate) {
+    const error = new Error("Missing smsTemplate.");
+    error.type = SMS_TEMPLATE_NOT_VALID_ERROR_TYPE;
+    return Promise.reject(error);
+  }
+  if (!smsTemplate.source) {
+    const error = new Error("Missing smsTemplate source.");
+    error.type = SMS_TEMPLATE_NOT_VALID_ERROR_TYPE;
+    return Promise.reject(error);
+  }
+  if (!smsTemplate.text) {
+    const error = new Error("Missing smsTemplate text.");
+    error.type = SMS_TEMPLATE_NOT_VALID_ERROR_TYPE;
     return Promise.reject(error);
   }
   const {
@@ -74,7 +98,9 @@ function otpCodeSend(phoneNumber, smsTemplate, accountConfig, options = {}) {
       response => {
         const contentType = response.headers["content-type"];
         if (!/^application\/json/.test(contentType)) {
-          reject(new Error("Invalid response content type."));
+          const error = new Error("Response content type is not valid.");
+          error.type = CONTENT_TYPE_NOT_VALID_ERROR_TYPE;
+          reject(error);
           return;
         }
         let data = "";
@@ -84,20 +110,14 @@ function otpCodeSend(phoneNumber, smsTemplate, accountConfig, options = {}) {
         response.on("end", () => {
           const json = JSON.parse(data);
           if (response.statusCode !== 200) {
-            const message =
-              json.code === WAVECELL_INVALID_MSDSN_ERROR_CODE
-                ? "Invalid MSISDN (not mobile phone number)."
-                : "Request failed.";
-            const error = new Error(message);
-            error.rawResponse = json;
-            reject(error);
+            reject(getErrorFromRawResponse(json, response.statusCode));
             return;
           }
           resolve(json);
         });
       }
     );
-    req.on("error", error => reject(error));
+    req.on("error", reject);
     req.write(JSON.stringify(body));
     req.end();
   });

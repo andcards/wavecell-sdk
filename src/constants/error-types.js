@@ -1,3 +1,6 @@
-/* eslint-disable import/prefer-default-export */
-export const AUTH_ERROR_TYPE = "AUTH_ERROR_TYPE";
-/* eslint-enable import/prefer-default-export */
+export const AUTH_FAILED_ERROR_TYPE = "AUTH_FAILED";
+export const CONTENT_TYPE_NOT_VALID_ERROR_TYPE =
+  "CONTENT_TYPE_NOT_VALID_ERROR_TYPE";
+export const DESTINATION_NOT_VALID_ERROR_TYPE = "DESTINATION_NOT_VALID";
+export const REQUEST_FAILED_ERROR_TYPE = "REQUEST_FAILED";
+export const SMS_TEMPLATE_NOT_VALID_ERROR_TYPE = "SMS_TEMPLATE_NOT_VALID";

@@ -105,7 +105,8 @@ otpCodeVerify(otp, resourceUri, accountConfig).then(response => {
 
 #### Parameters
 
-- `otp` - Otp code received via sms. (Required)
+- `otp` - Otp code received via sms. Pass empty otp code to get current status
+  of authentication object.
 - `resourceUri` - Uri for validating otp. Can be found in `otpCodeSend`
   response. (Required)
 - `accountConfig` - Wavecell account credentials. (Required)
