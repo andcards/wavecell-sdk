@@ -1,6 +1,6 @@
 import { request } from "https";
+import { AUTH_ERROR_TYPE } from "./constants/error-types";
 import { WAVECELL_DOMAIN_BASE } from "./constants/wavecell-api-urls";
-import { AUTH_ERROR_TYPE } from "../lib/constants/error-types";
 
 /**
  * Validate otp code.
