@@ -1,10 +1,10 @@
 import { expect } from "chai";
-import getErrorFromRawResponse from "../../src/utils/get-error-from-raw-response";
 import {
   AUTH_FAILED_ERROR_TYPE,
   DESTINATION_NOT_VALID_ERROR_TYPE,
   REQUEST_FAILED_ERROR_TYPE
-} from "../../lib/constants/error-types";
+} from "../../src/constants/error-types";
+import getErrorFromRawResponse from "../../src/utils/get-error-from-raw-response";
 
 describe("utils/get-error-from-raw-response", () => {
   describe("getErrorFromRawResponse", () => {

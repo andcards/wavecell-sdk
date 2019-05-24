@@ -1,8 +1,10 @@
 import { expect } from "chai";
 import nock from "nock";
 import { otpCodeVerify } from "../src";
-import { AUTH_FAILED_ERROR_TYPE } from "../src/constants/error-types";
-import { CONTENT_TYPE_NOT_VALID_ERROR_TYPE } from "../lib/constants/error-types";
+import {
+  AUTH_FAILED_ERROR_TYPE,
+  CONTENT_TYPE_NOT_VALID_ERROR_TYPE
+} from "../src/constants/error-types";
 
 describe("otp-code-verify", () => {
   describe("otpCodeVerify", () => {
