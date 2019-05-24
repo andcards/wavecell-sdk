@@ -1,8 +1,6 @@
 // Verify response statuses.
 // https://developer.wavecell.com/v1/api-documentation/verify-code-validation
-export default {
-  EXPIRED: "EXPIRED",
-  FAILED: "FAILED",
-  VERIFIED: "VERIFIED",
-  WAITING: "WAITING"
-};
+export const EXPIRED = "EXPIRED";
+export const FAILED = "FAILED";
+export const VERIFIED = "VERIFIED";
+export const WAITING = "WAITING";
