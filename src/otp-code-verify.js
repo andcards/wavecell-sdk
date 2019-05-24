@@ -1,6 +1,6 @@
 import { request } from "https";
 import { WAVECELL_DOMAIN_BASE } from "./constants/wavecell-api-urls";
-import AuthError from "./errors/auth-error";
+import { AUTH_ERROR_TYPE } from "../lib/constants/error-types";
 
 /**
  * Validate otp code.
@@ -14,10 +14,14 @@ import AuthError from "./errors/auth-error";
 function otpCodeVerify(otp, resourceUri, accountConfig) {
   const { accountId, password } = accountConfig;
   if (!accountId) {
-    return Promise.reject(new AuthError("Missing accountId."));
+    const error = new Error("Missing accountId.");
+    error.type = AUTH_ERROR_TYPE;
+    return Promise.reject(error);
   }
   if (!password) {
-    return Promise.reject(new AuthError("Missing password."));
+    const error = new Error("Missing password.");
+    error.type = AUTH_ERROR_TYPE;
+    return Promise.reject(error);
   }
   const authorizationBasic = Buffer.from(`${accountId}:${password}`).toString(
     "base64"
