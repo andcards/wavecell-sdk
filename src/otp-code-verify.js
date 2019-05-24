@@ -3,15 +3,14 @@ import { WAVECELL_DOMAIN_BASE } from "./constants";
 
 /**
  * Validate otp code.
- *
+ * @name otpCodeVerify
  * @param {string} otp - Otp code received via sms.
  * @param {string} resourceUri - Uri for validating otp. Can be found in otpCodeSend response.
- * @param {string} accountConfig.accountId - Wavecell account id.
- * @param {string} accountConfig.password - Wavecell account password.
+ * @param {{ accountId: string, password: string }} accountConfig - Wavecell account configuration.
  *
  * @return {Promise<object>} - Wavecell API json response. https://developer.wavecell.com/v1/api-documentation/verify-code-validation#response
  */
-export default (otp, resourceUri, accountConfig) => {
+function otpCodeVerify(otp, resourceUri, accountConfig) {
   const { accountId, password } = accountConfig;
   if (!accountId) {
     return Promise.reject(new Error("Missing accountId."));
@@ -58,4 +57,6 @@ export default (otp, resourceUri, accountConfig) => {
     req.on("error", error => reject(error));
     req.end();
   });
-};
+}
+
+export default otpCodeVerify;

@@ -13,24 +13,15 @@ const DEFAULT_OPTIONS = {
 
 /**
  * Send otp code to phone number.
- *
+ * @name otpCodeSend
  * @param {string} phoneNumber - Destination phone number.
- * @param {string} smsTemplate.source - Used as senderID.
- * @param {string} smsTemplate.text - Text of SMS body. Can be personalized with {code} and {productName} placeholders.
- * @param {string} smsTemplate.encoding - Optional. Recommended value: AUTO. Character set to use for this SMS - The possible values are AUTO - GSM7 - UCS2.
- * @param {string} accountConfig.accountId - Wavecell account id.
- * @param {string} accountConfig.password - Wavecell account password.
- * @param {string} accountConfig.subAccountId - Wavecell sub account id.
- * @param {number} options.codeLength - Optional. Length of sended code. Default 4.
- * @param {string} options.codeType - Optional. Type of sended code. Default "NUMERIC".
- * @param {number} options.codeValidity - Optional. Number of seconds code will be valid.
- * @param {boolean} options.createNew - Optional. Flag to force create new code each time. Default true.
- * @param {number} options.resendingInterval - Optional. Number of seconds between requests to the same phone number. default 15.
- * @param {number} options.productName - Optional. Product name which can be displayed in sms text.
+ * @param {{ source: string, text: string, encoding?: string }} smsTemplate - configuration of SMS template.
+ * @param {{ accountId: string, password: string, subAccountId: string }} accountConfig - Wavecell account configuration.
+ * @param {{ codeLength?: number, codeType?: string, codeValidity?: number, createNew?: boolean, resendingInterval?: number, productName?: string }} options - Additional configuration for code generation.
  *
  * @return {Promise<object>} - Wavecell API json response. https://developer.wavecell.com/v1/api-documentation/verify-code-generation#response
  */
-export default (phoneNumber, smsTemplate, accountConfig, options = {}) => {
+function otpCodeSend(phoneNumber, smsTemplate, accountConfig, options = {}) {
   const { accountId, password, subAccountId } = accountConfig;
   if (!accountId) {
     return Promise.reject(new Error("Missing accountId."));
@@ -103,4 +94,6 @@ export default (phoneNumber, smsTemplate, accountConfig, options = {}) => {
     req.write(JSON.stringify(body));
     req.end();
   });
-};
+}
+
+export default otpCodeSend;
