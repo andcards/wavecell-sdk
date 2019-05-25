@@ -5,6 +5,7 @@
 [![npm package](https://badge.fury.io/js/wavecell-sdk.svg)](https://www.npmjs.org/package/wavecell-sdk)
 [![Dependency Status](https://david-dm.org/andcards/wavecell-sdk.svg)](https://david-dm.org/andcards/wavecell-sdk)
 [![devDependency Status](https://david-dm.org/andcards/wavecell-sdk/dev-status.svg)](https://david-dm.org/andcards/wavecell-sdk#info=devDependencies)
+[![Coverage Status](https://codecov.io/gh/andcards/wavecell-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/andcards/wavecell-sdk)
 
 Javascript SDK for Wavecell API.
 https://developer.wavecell.com/v1/api-documentation.
