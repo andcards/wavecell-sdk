@@ -26,7 +26,12 @@ const DEFAULT_OPTIONS = {
  *
  * @return {Promise<object>} - Wavecell API json response. https://developer.wavecell.com/v1/api-documentation/verify-code-generation#response
  */
-function otpCodeSend(phoneNumber, smsTemplate, accountConfig, options = {}) {
+function otpCodeSend(
+  phoneNumber,
+  smsTemplate,
+  accountConfig,
+  options = DEFAULT_OPTIONS
+) {
   const { accountId, password, subAccountId } = accountConfig;
   if (!accountId) {
     const error = new Error("Missing accountId.");
