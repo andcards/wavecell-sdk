@@ -1,6 +1,6 @@
 {
   "name": "wavecell-sdk",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "Javascript SDK for Wavecell",
   "keywords": [
     "wavecell",
