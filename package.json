@@ -15,7 +15,8 @@
   "scripts": {
     "clean": "rimraf lib",
     "lint": "eslint src",
-    "test": "mocha ./__tests__ --recursive --require @babel/register --exit",
+    "test": "nyc --clean --include \"src\" mocha ./__tests__ --recursive --require @babel/register --exit",
+    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build": "npm run lint && npm test && npm run clean && babel src --out-dir lib"
   },
   "license": "MIT",
@@ -42,6 +43,7 @@
     "eslint-plugin-prettier": "^3.0.1",
     "mocha": "^6.1.4",
     "nock": "^10.0.6",
+    "nyc": "^14.1.1",
     "prettier": "^1.17.0"
   }
 }

@@ -13,3 +13,5 @@ notifications:
   slack: cards-corp:NJt6wNBjKHUWl15RMjvGRbcA
 script:
   - npm run build
+  - npm run test
+  - npm run report-coverage
