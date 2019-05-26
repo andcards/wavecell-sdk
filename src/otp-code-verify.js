@@ -4,6 +4,7 @@ import {
   CONTENT_TYPE_NOT_VALID_ERROR_TYPE
 } from "./constants/error-types";
 import { WAVECELL_DOMAIN_BASE } from "./constants/wavecell-api-urls";
+import getAuthorizationHeader from "./utils/get-authorization-header";
 import getErrorFromRawResponse from "./utils/get-error-from-raw-response";
 
 /**
@@ -17,25 +18,22 @@ import getErrorFromRawResponse from "./utils/get-error-from-raw-response";
  * @return {Promise<object>} - Wavecell API json response. https://developer.wavecell.com/v1/api-documentation/verify-code-validation#response
  */
 function otpCodeVerify(otp, resourceUri, accountConfig) {
-  const { accountId, password } = accountConfig;
-  if (!accountId) {
-    const error = new Error("Missing accountId.");
+  if (!accountConfig) {
+    const error = new Error("Missing auth credentials.");
     error.type = AUTH_FAILED_ERROR_TYPE;
     return Promise.reject(error);
   }
-  if (!password) {
-    const error = new Error("Missing password.");
+  const authHeader = getAuthorizationHeader(accountConfig);
+  if (!authHeader) {
+    const error = new Error("Missing auth credentials.");
     error.type = AUTH_FAILED_ERROR_TYPE;
     return Promise.reject(error);
   }
-  const authorizationBasic = Buffer.from(`${accountId}:${password}`).toString(
-    "base64"
-  );
   return new Promise((resolve, reject) => {
     const req = request(
       {
         headers: {
-          Authorization: `Basic ${authorizationBasic}`
+          Authorization: authHeader
         },
         hostname: WAVECELL_DOMAIN_BASE,
         method: "GET",

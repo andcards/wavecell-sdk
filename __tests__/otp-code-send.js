@@ -21,13 +21,42 @@ describe("otp-code-send", () => {
       after(() => {
         nock.cleanAll();
       });
-      it("should reply with json object from wavecell API response", done => {
+      it("should reply with json object from wavecell API response with basic auth", done => {
         otpCodeSend(
           "+1555333222",
           { source: "templateSource", text: "sms text" },
           {
             accountId: "accountId",
             password: "qwerty",
+            subAccountId: "subAccountId"
+          }
+        )
+          .then(response => {
+            expect(response).to.deep.equal({
+              resourceUri: "/bar"
+            });
+            done();
+          })
+          .catch(done);
+      });
+    });
+    describe("", () => {
+      before(() => {
+        nock("https://api.wavecell.com/verify/v1")
+          .post("/subAccountId")
+          .reply(200, {
+            resourceUri: "/bar"
+          });
+      });
+      after(() => {
+        nock.cleanAll();
+      });
+      it("should reply with json object from wavecell API response with bearer auth", done => {
+        otpCodeSend(
+          "+1555333222",
+          { source: "templateSource", text: "sms text" },
+          {
+            apiKey: "apiKey",
             subAccountId: "subAccountId"
           }
         )
@@ -137,7 +166,7 @@ describe("otp-code-send", () => {
           try {
             expect(error.constructor).to.be.equal(Error);
             expect(error.type).to.be.equal(AUTH_FAILED_ERROR_TYPE);
-            expect(error.message).to.be.equal("Missing accountId.");
+            expect(error.message).to.be.equal("Missing auth credentials.");
           } catch (catchError) {
             done(catchError);
             return;
@@ -161,7 +190,47 @@ describe("otp-code-send", () => {
           try {
             expect(error.constructor).to.be.equal(Error);
             expect(error.type).to.be.equal(AUTH_FAILED_ERROR_TYPE);
-            expect(error.message).to.be.equal("Missing password.");
+            expect(error.message).to.be.equal("Missing auth credentials.");
+          } catch (catchError) {
+            done(catchError);
+            return;
+          }
+          done();
+        });
+    });
+    it("should reject with AUTH_FAILED_ERROR_TYPE if apiKey is not specified", done => {
+      otpCodeSend(
+        "+1555333222",
+        { source: "templateSource", text: "sms text" },
+        {
+          subAccountId: "subAccountId"
+        }
+      )
+        .then(() => {
+          done(new Error("Sent otp code without password"));
+        })
+        .catch(error => {
+          try {
+            expect(error.constructor).to.be.equal(Error);
+            expect(error.type).to.be.equal(AUTH_FAILED_ERROR_TYPE);
+            expect(error.message).to.be.equal("Missing auth credentials.");
+          } catch (catchError) {
+            done(catchError);
+            return;
+          }
+          done();
+        });
+    });
+    it("should reject with AUTH_FAILED_ERROR_TYPE if accountConfig is not specified", done => {
+      otpCodeSend("+1555333222", { source: "templateSource", text: "sms text" })
+        .then(() => {
+          done(new Error("Sent otp code without password"));
+        })
+        .catch(error => {
+          try {
+            expect(error.constructor).to.be.equal(Error);
+            expect(error.type).to.be.equal(AUTH_FAILED_ERROR_TYPE);
+            expect(error.message).to.be.equal("Missing auth credentials.");
           } catch (catchError) {
             done(catchError);
             return;

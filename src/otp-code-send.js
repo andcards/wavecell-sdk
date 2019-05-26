@@ -6,6 +6,7 @@ import {
   CONTENT_TYPE_NOT_VALID_ERROR_TYPE
 } from "./constants/error-types";
 import { WAVECELL_DOMAIN_BASE } from "./constants/wavecell-api-urls";
+import getAuthorizationHeader from "./utils/get-authorization-header";
 import getErrorFromRawResponse from "./utils/get-error-from-raw-response";
 
 const DEFAULT_OPTIONS = {
@@ -21,7 +22,7 @@ const DEFAULT_OPTIONS = {
  * @name otpCodeSend
  * @param {string} phoneNumber - Destination phone number.
  * @param {{ source: string, text: string, encoding?: string }} smsTemplate - configuration of SMS template.
- * @param {{ accountId: string, password: string, subAccountId: string }} accountConfig - Wavecell account configuration.
+ * @param {{ accountId: string, password: string, apiKey: string, subAccountId: string }} accountConfig - Wavecell account configuration.
  * @param {{ codeLength?: number, codeType?: string, codeValidity?: number, createNew?: boolean, resendingInterval?: number, productName?: string }} options - Additional configuration for code generation.
  *
  * @return {Promise<object>} - Wavecell API json response. https://developer.wavecell.com/v1/api-documentation/verify-code-generation#response
@@ -32,14 +33,15 @@ function otpCodeSend(
   accountConfig,
   options = DEFAULT_OPTIONS
 ) {
-  const { accountId, password, subAccountId } = accountConfig;
-  if (!accountId) {
-    const error = new Error("Missing accountId.");
+  if (!accountConfig) {
+    const error = new Error("Missing auth credentials.");
     error.type = AUTH_FAILED_ERROR_TYPE;
     return Promise.reject(error);
   }
-  if (!password) {
-    const error = new Error("Missing password.");
+  const { subAccountId } = accountConfig;
+  const authHeader = getAuthorizationHeader(accountConfig);
+  if (!authHeader) {
+    const error = new Error("Missing auth credentials.");
     error.type = AUTH_FAILED_ERROR_TYPE;
     return Promise.reject(error);
   }
@@ -86,14 +88,11 @@ function otpCodeSend(
     resendingInterval,
     template: smsTemplate
   };
-  const authorizationBasic = Buffer.from(`${accountId}:${password}`).toString(
-    "base64"
-  );
   return new Promise((resolve, reject) => {
     const req = request(
       {
         headers: {
-          Authorization: `Basic ${authorizationBasic}`,
+          Authorization: authHeader,
           "Content-Type": "application/json"
         },
         hostname: WAVECELL_DOMAIN_BASE,

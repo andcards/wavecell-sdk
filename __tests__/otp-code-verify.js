@@ -149,7 +149,7 @@ describe("otp-code-verify", () => {
         .catch(error => {
           try {
             expect(error.type).to.be.equal(AUTH_FAILED_ERROR_TYPE);
-            expect(error.message).to.be.equal("Missing accountId.");
+            expect(error.message).to.be.equal("Missing auth credentials.");
           } catch (catchError) {
             done(catchError);
             return;
@@ -167,7 +167,39 @@ describe("otp-code-verify", () => {
         .catch(error => {
           try {
             expect(error.type).to.be.equal(AUTH_FAILED_ERROR_TYPE);
-            expect(error.message).to.be.equal("Missing password.");
+            expect(error.message).to.be.equal("Missing auth credentials.");
+          } catch (catchError) {
+            done(catchError);
+            return;
+          }
+          done();
+        });
+    });
+    it("should reject with AUTH_FAILED_ERROR_TYPE if apiKey is not specified", done => {
+      otpCodeVerify("1111", "/foo", {})
+        .then(() => {
+          done(new Error("Verified otp code without password"));
+        })
+        .catch(error => {
+          try {
+            expect(error.type).to.be.equal(AUTH_FAILED_ERROR_TYPE);
+            expect(error.message).to.be.equal("Missing auth credentials.");
+          } catch (catchError) {
+            done(catchError);
+            return;
+          }
+          done();
+        });
+    });
+    it("should reject with AUTH_FAILED_ERROR_TYPE if accountConfig is not specified", done => {
+      otpCodeVerify("1111", "/foo")
+        .then(() => {
+          done(new Error("Verified otp code without password"));
+        })
+        .catch(error => {
+          try {
+            expect(error.type).to.be.equal(AUTH_FAILED_ERROR_TYPE);
+            expect(error.message).to.be.equal("Missing auth credentials.");
           } catch (catchError) {
             done(catchError);
             return;
