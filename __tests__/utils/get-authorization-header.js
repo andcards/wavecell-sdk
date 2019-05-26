@@ -22,14 +22,14 @@ describe("utils/get-authorization-header", () => {
       const authorizationHeader = getAuthorizationHeader({
         apiKey: "foo",
         accountId: "accountId",
-        password: "password"
+        accountPassword: "password"
       });
       expect(authorizationHeader).to.be.equal("Bearer foo");
     });
     it("should return Basic apiKey if account config has no apiKey, but has accountId and password", () => {
       const authorizationHeader = getAuthorizationHeader({
         accountId: "accountId",
-        password: "password"
+        accountPassword: "password"
       });
       expect(authorizationHeader).to.be.equal("Basic YWNjb3VudElkOnBhc3N3b3Jk");
     });
