@@ -2,12 +2,12 @@ function getAuthorizationHeader(accountConfig) {
   if (!accountConfig) {
     return undefined;
   }
-  const { accountId, apiKey, password } = accountConfig;
+  const { accountId, accountPassword, apiKey } = accountConfig;
   if (apiKey) {
     return `Bearer ${apiKey}`;
   }
-  if (accountId && password) {
-    const buffer = Buffer.from(`${accountId}:${password}`);
+  if (accountId && accountPassword) {
+    const buffer = Buffer.from(`${accountId}:${accountPassword}`);
     return `Basic ${buffer.toString("base64")}`;
   }
   return undefined;

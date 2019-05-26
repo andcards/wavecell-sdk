@@ -23,9 +23,11 @@ describe("otp-code-verify", () => {
         nock.cleanAll();
       });
       it("should return json object from wavecell API response for non empty", done => {
-        otpCodeVerify("1412", "/foo", {
+        otpCodeVerify({
           accountId: "accountId",
-          password: "qwerty"
+          accountPassword: "qwerty",
+          otp: "1412",
+          resourceUri: "/foo"
         })
           .then(response => {
             expect(response).to.deep.equal({
@@ -49,9 +51,10 @@ describe("otp-code-verify", () => {
         nock.cleanAll();
       });
       it("should return json object from wavecell API response for empty code", done => {
-        otpCodeVerify("", "/foo", {
+        otpCodeVerify({
           accountId: "accountId",
-          password: "qwerty"
+          accountPassword: "qwerty",
+          resourceUri: "/foo"
         })
           .then(response => {
             expect(response).to.deep.equal({
@@ -77,9 +80,11 @@ describe("otp-code-verify", () => {
         nock.cleanAll();
       });
       it("should reply with CONTENT_TYPE_NOT_VALID_ERROR_TYPE if content type is not a json", done => {
-        otpCodeVerify("1234", "/foo", {
+        otpCodeVerify({
           accountId: "accountId",
-          password: "qwerty"
+          accountPassword: "qwerty",
+          otp: "1234",
+          resourceUri: "/foo"
         })
           .then(() => {
             done(new Error("Resolved verify with bad response content type"));
@@ -112,9 +117,11 @@ describe("otp-code-verify", () => {
         nock.cleanAll();
       });
       it("should reply with AUTH_FAILED_ERROR_TYPE if failed to authenticate request", done => {
-        otpCodeVerify("1234", "/foo", {
+        otpCodeVerify({
           accountId: "accountId",
-          password: "qwerty"
+          accountPassword: "qwerty",
+          otp: "1234",
+          resourceUri: "/foo"
         })
           .then(() => {
             done(new Error("Resolved verify with bad credentials"));
@@ -140,8 +147,10 @@ describe("otp-code-verify", () => {
       });
     });
     it("should reject with AUTH_FAILED_ERROR_TYPE if account id is not specified", done => {
-      otpCodeVerify("1111", "/foo", {
-        password: "qwerty"
+      otpCodeVerify({
+        accountPassword: "qwerty",
+        otp: "1111",
+        resourceUri: "/foo"
       })
         .then(() => {
           done(new Error("Verified otp code without account id"));
@@ -158,8 +167,10 @@ describe("otp-code-verify", () => {
         });
     });
     it("should reject with AUTH_FAILED_ERROR_TYPE if password is not specified", done => {
-      otpCodeVerify("1111", "/foo", {
-        accountId: "accountId"
+      otpCodeVerify({
+        accountId: "accountId",
+        otp: "1111",
+        resourceUri: "/foo"
       })
         .then(() => {
           done(new Error("Verified otp code without password"));
@@ -176,23 +187,10 @@ describe("otp-code-verify", () => {
         });
     });
     it("should reject with AUTH_FAILED_ERROR_TYPE if apiKey is not specified", done => {
-      otpCodeVerify("1111", "/foo", {})
-        .then(() => {
-          done(new Error("Verified otp code without password"));
-        })
-        .catch(error => {
-          try {
-            expect(error.type).to.be.equal(AUTH_FAILED_ERROR_TYPE);
-            expect(error.message).to.be.equal("Missing auth credentials.");
-          } catch (catchError) {
-            done(catchError);
-            return;
-          }
-          done();
-        });
-    });
-    it("should reject with AUTH_FAILED_ERROR_TYPE if accountConfig is not specified", done => {
-      otpCodeVerify("1111", "/foo")
+      otpCodeVerify({
+        otp: "1111",
+        resourceUri: "/foo"
+      })
         .then(() => {
           done(new Error("Verified otp code without password"));
         })

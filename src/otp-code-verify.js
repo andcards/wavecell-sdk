@@ -8,22 +8,30 @@ import getAuthorizationHeader from "./utils/get-authorization-header";
 import getErrorFromRawResponse from "./utils/get-error-from-raw-response";
 
 /**
- * Validate otp code.
+ * Validate OTP code.
  *
  * @name otpCodeVerify
- * @param {string} otp - Otp code received via sms. Pass empty otp code to get current status of authentication object.
- * @param {string} resourceUri - Uri for validating otp. Can be found in otpCodeSend response.
- * @param {{ accountId: string, apiKey: string, password: string }} accountConfig - Wavecell account configuration.
+ * @param {Object} parameters - `otpCodeVerify` parameters.
+ * @param {string} [parameters.otp] - OTP code received via SMS. Do not pass OTP code to get current status of authentication object.
+ * @param {string} parameters.resourceUri - Uri for validating OTP. Can be found in otpCodeSend response.
+ * @param {string} [parameters.accountId] - Wavecell account id. Optional if apiKey is passed.
+ * @param {string} [parameters.accountPassword] - Wavecell account password. Optional if apiKey is passed.
+ * @param {string} parameters.apiKey - Wavecell account apiKey.
  *
- * @return {Promise<object>} - Wavecell API json response. https://developer.wavecell.com/v1/api-documentation/verify-code-validation#response
+ * @return {Promise<Object>} - Wavecell API json response. https://developer.wavecell.com/v1/api-documentation/verify-code-validation#response
  */
-function otpCodeVerify(otp, resourceUri, accountConfig) {
-  if (!accountConfig) {
-    const error = new Error("Missing auth credentials.");
-    error.type = AUTH_FAILED_ERROR_TYPE;
-    return Promise.reject(error);
-  }
-  const authHeader = getAuthorizationHeader(accountConfig);
+function otpCodeVerify({
+  accountId,
+  accountPassword,
+  apiKey,
+  otp,
+  resourceUri
+}) {
+  const authHeader = getAuthorizationHeader({
+    accountId,
+    accountPassword,
+    apiKey
+  });
   if (!authHeader) {
     const error = new Error("Missing auth credentials.");
     error.type = AUTH_FAILED_ERROR_TYPE;

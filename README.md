@@ -26,24 +26,20 @@ yarn add wavecell-sdk
 
 ## API
 
-### otpCodeSend(phoneNumber, smsTemplate, accountConfig, options = {})
+### otpCodeSend
 
 To send otp code to your phone number, use `otpCodeSend`.
 
 ```javascript
 import { otpCodeSend } from "wavecell-sdk";
 
-const smsTemplate = {
-  source: "Wavecell SDK",
-  text: "Your verification code is {code}."
-};
-
-const accountConfig = {
+otpCodeSend({
   apiKey: "ApiKey from customer portal",
+  destination: "+3809399927332",
+  smsSource: "Wavecell SDK",
+  smsText: "Your verification code is {code}.",
   subAccountId: "Your wavecell sub account id"
-};
-
-otpCodeSend("+3809399927332", smsTemplate, accountConfig).then(response => {
+}).then(response => {
   // Use resourceUri for validating otp.
   console.log(response.resourceUri);
 });
@@ -51,20 +47,16 @@ otpCodeSend("+3809399927332", smsTemplate, accountConfig).then(response => {
 
 #### Parameters
 
-- `phoneNumber` - receiver phone number. (Required)
-- `smsTemplate` - SMS template configuration. (Required)
-  - `source` - Used as senderID. (Required)
-  - `text` - Text of SMS body. Can be personalized with {code} and {productName}
-    placeholders.
-  - `encoding` - Character set to use for this SMS - The possible values are
-    AUTO - GSM7 - UCS2. Default `AUTO`. (Optional)
-- `accountConfig` - Wavecell account credentials. (Required)
-  - `apiKey` - Api key from Wavecell customer portal.
-  - `accountId` - Wavecell account id. (Required if `apiKey` is not specified)
-  - `password` - Wavecell account password. (Required if `apiKey` is not
-    specified)
-  - `subAccountId` - Wavecell sub account id. (Required)
-- `options` (Optional)
+- `apiKey` - Api key from Wavecell customer portal.
+- `accountId` - Wavecell account id. (Required if `apiKey` is not specified)
+- `accountPassword` - Wavecell account password. (Required if `apiKey` is not
+  specified)
+- `destination` - receiver phone number. (Required)
+- `smsSource` - Used as senderID. (Required)
+- `smsText` - Text of SMS body. Can be personalized with {code} and
+  {productName}. placeholders.
+- `subAccountId` - Wavecell sub account id. (Required)
+- `options` - Additional configurations.
   - `codeLength` - Length of sended code. Default `4`. (Optional)
   - `codeType` - Type of sended code. Default `NUMERIC`. (Optional)
   - `codeValidity` - Number of seconds code will be valid. Default `300`.
@@ -74,28 +66,26 @@ otpCodeSend("+3809399927332", smsTemplate, accountConfig).then(response => {
   - `resendingInterval` - Number of seconds between requests to the same phone
     number. default `15`. (Optional)
   - `productName` - Product name which can be displayed in sms text. (Optional)
+  - `smsEncoding` - Character set to use for this SMS - The possible values are
+    `AUTO` - `GSM7` - `UCS2`. Default `AUTO`. (Optional)
 
 #### Response
 
 Resolves with object, same to response body of Wavecell API.
 https://developer.wavecell.com/v1/api-documentation/verify-code-generation.
 
-### otpCodeVerify(otp, resourceUri, accountConfig)
+### otpCodeVerify
 
 To verify otp received in SMS, use `otpCodeVerify`.
 
 ```javascript
 import { otpCodeVerify, VERIFICATION_STATUS } from "wavecell-sdk";
 
-const accountConfig = {
+otpCodeVerify({
   apiKey: "ApiKey from customer portal",
-  subAccountId: "Your wavecell sub account id"
-};
-
-const otp = "Otp received in SMS";
-const resourceUri = "Resource uri received in otpCodeSend step";
-
-otpCodeVerify(otp, resourceUri, accountConfig).then(response => {
+  otp: "Otp received in SMS",
+  resourceUri: "Resource uri received in otpCodeSend step"
+}).then(response => {
   if (response.status === VERIFICATION_STATUS.VERIFIED) {
     // Log in user
   } else {
@@ -106,15 +96,14 @@ otpCodeVerify(otp, resourceUri, accountConfig).then(response => {
 
 #### Parameters
 
+- `accountId` - Wavecell account id. (Required if `apiKey` is not specified)
+- `accountPassword` - Wavecell account password. (Required if `apiKey` is not
+  specified)
+- `apiKey` - Api key from Wavecell customer portal.
 - `otp` - Otp code received via sms. Pass empty otp code to get current status
   of authentication object.
 - `resourceUri` - Uri for validating otp. Can be found in `otpCodeSend`
   response. (Required)
-- `accountConfig` - Wavecell account credentials. (Required)
-  - `apiKey` - Api key from Wavecell customer portal.
-  - `accountId` - Wavecell account id. (Required if `apiKey` is not specified)
-  - `password` - Wavecell account password. (Required if `apiKey` is not
-    specified)
 
 #### Response
 

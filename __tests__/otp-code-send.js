@@ -22,15 +22,14 @@ describe("otp-code-send", () => {
         nock.cleanAll();
       });
       it("should reply with json object from wavecell API response with basic auth", done => {
-        otpCodeSend(
-          "+1555333222",
-          { source: "templateSource", text: "sms text" },
-          {
-            accountId: "accountId",
-            password: "qwerty",
-            subAccountId: "subAccountId"
-          }
-        )
+        otpCodeSend({
+          accountId: "accountId",
+          accountPassword: "qwerty",
+          destination: "+1555333222",
+          smsSource: "templateSource",
+          smsText: "sms text",
+          subAccountId: "subAccountId"
+        })
           .then(response => {
             expect(response).to.deep.equal({
               resourceUri: "/bar"
@@ -52,14 +51,13 @@ describe("otp-code-send", () => {
         nock.cleanAll();
       });
       it("should reply with json object from wavecell API response with bearer auth", done => {
-        otpCodeSend(
-          "+1555333222",
-          { source: "templateSource", text: "sms text" },
-          {
-            apiKey: "apiKey",
-            subAccountId: "subAccountId"
-          }
-        )
+        otpCodeSend({
+          apiKey: "apiKey",
+          destination: "+1555333222",
+          smsSource: "templateSource",
+          smsText: "sms text",
+          subAccountId: "subAccountId"
+        })
           .then(response => {
             expect(response).to.deep.equal({
               resourceUri: "/bar"
@@ -81,15 +79,14 @@ describe("otp-code-send", () => {
         nock.cleanAll();
       });
       it("should reply with CONTENT_TYPE_NOT_VALID_ERROR_TYPE if content type is not a json", done => {
-        otpCodeSend(
-          "+1555333222",
-          { source: "templateSource", text: "sms text" },
-          {
-            accountId: "accountId",
-            password: "qwerty",
-            subAccountId: "subAccountId"
-          }
-        )
+        otpCodeSend({
+          accountId: "accountId",
+          accountPassword: "qwerty",
+          destination: "+1555333222",
+          smsSource: "templateSource",
+          smsText: "sms text",
+          subAccountId: "subAccountId"
+        })
           .then(() => {
             done(new Error("Resolved send with bad response content type"));
           })
@@ -120,15 +117,14 @@ describe("otp-code-send", () => {
         nock.cleanAll();
       });
       it("should reply with DESTINATION_NOT_VALID_ERROR_TYPE if phone number is not valid", done => {
-        otpCodeSend(
-          "+1555333222",
-          { source: "templateSource", text: "sms text" },
-          {
-            accountId: "accountId",
-            password: "qwerty",
-            subAccountId: "subAccountId"
-          }
-        )
+        otpCodeSend({
+          accountId: "accountId",
+          accountPassword: "qwerty",
+          destination: "+1555333222",
+          smsSource: "templateSource",
+          smsText: "sms text",
+          subAccountId: "subAccountId"
+        })
           .then(() => {
             done(new Error("Resolved send with bad response content type"));
           })
@@ -151,14 +147,13 @@ describe("otp-code-send", () => {
       });
     });
     it("should reject with AUTH_FAILED_ERROR_TYPE if account id is not specified", done => {
-      otpCodeSend(
-        "+1555333222",
-        { source: "templateSource", text: "sms text" },
-        {
-          password: "qwerty",
-          subAccountId: "subAccountId"
-        }
-      )
+      otpCodeSend({
+        accountPassword: "qwerty",
+        destination: "+1555333222",
+        smsSource: "templateSource",
+        smsText: "sms text",
+        subAccountId: "subAccountId"
+      })
         .then(() => {
           done(new Error("Sent otp code without account id"));
         })
@@ -175,14 +170,13 @@ describe("otp-code-send", () => {
         });
     });
     it("should reject with AUTH_FAILED_ERROR_TYPE if password is not specified", done => {
-      otpCodeSend(
-        "+1555333222",
-        { source: "templateSource", text: "sms text" },
-        {
-          accountId: "accountId",
-          subAccountId: "subAccountId"
-        }
-      )
+      otpCodeSend({
+        accountId: "accountId",
+        destination: "+1555333222",
+        smsSource: "templateSource",
+        smsText: "sms text",
+        subAccountId: "subAccountId"
+      })
         .then(() => {
           done(new Error("Sent otp code without password"));
         })
@@ -199,13 +193,12 @@ describe("otp-code-send", () => {
         });
     });
     it("should reject with AUTH_FAILED_ERROR_TYPE if apiKey is not specified", done => {
-      otpCodeSend(
-        "+1555333222",
-        { source: "templateSource", text: "sms text" },
-        {
-          subAccountId: "subAccountId"
-        }
-      )
+      otpCodeSend({
+        destination: "+1555333222",
+        smsSource: "templateSource",
+        smsText: "sms text",
+        subAccountId: "subAccountId"
+      })
         .then(() => {
           done(new Error("Sent otp code without password"));
         })
@@ -222,7 +215,11 @@ describe("otp-code-send", () => {
         });
     });
     it("should reject with AUTH_FAILED_ERROR_TYPE if accountConfig is not specified", done => {
-      otpCodeSend("+1555333222", { source: "templateSource", text: "sms text" })
+      otpCodeSend({
+        destination: "+1555333222",
+        smsSource: "templateSource",
+        smsText: "sms text"
+      })
         .then(() => {
           done(new Error("Sent otp code without password"));
         })
@@ -239,14 +236,13 @@ describe("otp-code-send", () => {
         });
     });
     it("should reject with AUTH_FAILED_ERROR_TYPE if sub account id is not specified", done => {
-      otpCodeSend(
-        "+1555333222",
-        { source: "templateSource", text: "sms text" },
-        {
-          accountId: "accountId",
-          password: "qwerty"
-        }
-      )
+      otpCodeSend({
+        accountId: "accountId",
+        accountPassword: "qwerty",
+        destination: "+1555333222",
+        smsSource: "templateSource",
+        smsText: "sms text"
+      })
         .then(() => {
           done(new Error("Sent otp code without sub account id"));
         })
@@ -263,15 +259,14 @@ describe("otp-code-send", () => {
         });
     });
     it("should reject with DESTINATION_NOT_VALID_ERROR_TYPE if phone number is not specified", done => {
-      otpCodeSend(
-        "",
-        { source: "templateSource", text: "sms text" },
-        {
-          accountId: "accountId",
-          password: "qwerty",
-          subAccountId: "subaccount id"
-        }
-      )
+      otpCodeSend({
+        accountId: "accountId",
+        accountPassword: "qwerty",
+        destination: "",
+        smsSource: "templateSource",
+        smsText: "sms text",
+        subAccountId: "subaccount id"
+      })
         .then(() => {
           done(new Error("Sent otp code without phone number"));
         })
@@ -287,10 +282,11 @@ describe("otp-code-send", () => {
           done();
         });
     });
-    it("should reject with SMS_TEMPLATE_NOT_VALID_ERROR_TYPE if smsTemplate is not specified", done => {
-      otpCodeSend("+123455", undefined, {
+    it("should reject with SMS_TEMPLATE_NOT_VALID_ERROR_TYPE if smsSource is not specified", done => {
+      otpCodeSend({
         accountId: "accountId",
-        password: "qwerty",
+        accountPassword: "qwerty",
+        destination: "+123455",
         subAccountId: "subaccount id"
       })
         .then(() => {
@@ -300,7 +296,7 @@ describe("otp-code-send", () => {
           try {
             expect(error.constructor).to.be.equal(Error);
             expect(error.type).to.be.equal(SMS_TEMPLATE_NOT_VALID_ERROR_TYPE);
-            expect(error.message).to.be.equal("Missing smsTemplate.");
+            expect(error.message).to.be.equal("Missing sms source.");
           } catch (catchError) {
             done(catchError);
             return;
@@ -308,16 +304,14 @@ describe("otp-code-send", () => {
           done();
         });
     });
-    it("should reject with SMS_TEMPLATE_NOT_VALID_ERROR_TYPE if smsTemplate.source is not specified", done => {
-      otpCodeSend(
-        "+123455",
-        {},
-        {
-          accountId: "accountId",
-          password: "qwerty",
-          subAccountId: "subaccount id"
-        }
-      )
+    it("should reject with SMS_TEMPLATE_NOT_VALID_ERROR_TYPE if smsText is not specified", done => {
+      otpCodeSend({
+        accountId: "accountId",
+        accountPassword: "qwerty",
+        destination: "+123455",
+        smsSource: "source",
+        subAccountId: "subaccount id"
+      })
         .then(() => {
           done(new Error("Sent otp code without sms template"));
         })
@@ -325,32 +319,7 @@ describe("otp-code-send", () => {
           try {
             expect(error.constructor).to.be.equal(Error);
             expect(error.type).to.be.equal(SMS_TEMPLATE_NOT_VALID_ERROR_TYPE);
-            expect(error.message).to.be.equal("Missing smsTemplate source.");
-          } catch (catchError) {
-            done(catchError);
-            return;
-          }
-          done();
-        });
-    });
-    it("should reject with SMS_TEMPLATE_NOT_VALID_ERROR_TYPE if smsTemplate.text is not specified", done => {
-      otpCodeSend(
-        "+123455",
-        { source: "source" },
-        {
-          accountId: "accountId",
-          password: "qwerty",
-          subAccountId: "subaccount id"
-        }
-      )
-        .then(() => {
-          done(new Error("Sent otp code without sms template"));
-        })
-        .catch(error => {
-          try {
-            expect(error.constructor).to.be.equal(Error);
-            expect(error.type).to.be.equal(SMS_TEMPLATE_NOT_VALID_ERROR_TYPE);
-            expect(error.message).to.be.equal("Missing smsTemplate text.");
+            expect(error.message).to.be.equal("Missing sms text.");
           } catch (catchError) {
             done(catchError);
             return;
