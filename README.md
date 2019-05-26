@@ -28,19 +28,21 @@ yarn add wavecell-sdk
 
 ### otpCodeSend
 
-To send otp code to your phone number, use `otpCodeSend`.
+To generate OTP code and send it to your phone number, use `otpCodeSend`.
 
 ```javascript
 import { otpCodeSend } from "wavecell-sdk";
 
+const phoneNumber = "+3809399927332";
+
 otpCodeSend({
   apiKey: "ApiKey from customer portal",
-  destination: "+3809399927332",
+  destination: phoneNumber,
   smsSource: "Wavecell SDK",
   smsText: "Your verification code is {code}.",
   subAccountId: "Your wavecell sub account id"
 }).then(response => {
-  // Use resourceUri for validating otp.
+  // Use resourceUri for validating OTP.
   console.log(response.resourceUri);
 });
 ```
@@ -76,14 +78,14 @@ https://developer.wavecell.com/v1/api-documentation/verify-code-generation.
 
 ### otpCodeVerify
 
-To verify otp received in SMS, use `otpCodeVerify`.
+To verify OTP received in SMS, use `otpCodeVerify`.
 
 ```javascript
 import { otpCodeVerify, VERIFICATION_STATUS } from "wavecell-sdk";
 
 otpCodeVerify({
   apiKey: "ApiKey from customer portal",
-  otp: "Otp received in SMS",
+  otp: "OTP received in SMS",
   resourceUri: "Resource uri received in otpCodeSend step"
 }).then(response => {
   if (response.status === VERIFICATION_STATUS.VERIFIED) {
@@ -100,9 +102,9 @@ otpCodeVerify({
 - `accountPassword` - Wavecell account password. (Required if `apiKey` is not
   specified)
 - `apiKey` - Api key from Wavecell customer portal.
-- `otp` - Otp code received via sms. Pass empty otp code to get current status
+- `otp` - OTP code received via sms. Pass empty OTP code to get current status
   of authentication object.
-- `resourceUri` - Uri for validating otp. Can be found in `otpCodeSend`
+- `resourceUri` - Uri for validating OTP. Can be found in `otpCodeSend`
   response. (Required)
 
 #### Response
