@@ -13,7 +13,7 @@ import getErrorFromRawResponse from "./utils/get-error-from-raw-response";
  * @name otpCodeVerify
  * @param {string} otp - Otp code received via sms. Pass empty otp code to get current status of authentication object.
  * @param {string} resourceUri - Uri for validating otp. Can be found in otpCodeSend response.
- * @param {{ accountId: string, password: string }} accountConfig - Wavecell account configuration.
+ * @param {{ accountId: string, apiKey: string, password: string }} accountConfig - Wavecell account configuration.
  *
  * @return {Promise<object>} - Wavecell API json response. https://developer.wavecell.com/v1/api-documentation/verify-code-validation#response
  */

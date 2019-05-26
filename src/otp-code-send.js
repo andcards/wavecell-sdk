@@ -22,7 +22,7 @@ const DEFAULT_OPTIONS = {
  * @name otpCodeSend
  * @param {string} phoneNumber - Destination phone number.
  * @param {{ source: string, text: string, encoding?: string }} smsTemplate - configuration of SMS template.
- * @param {{ accountId: string, password: string, apiKey: string, subAccountId: string }} accountConfig - Wavecell account configuration.
+ * @param {{ accountId: string, apiKey: string, password: string subAccountId: string }} accountConfig - Wavecell account configuration.
  * @param {{ codeLength?: number, codeType?: string, codeValidity?: number, createNew?: boolean, resendingInterval?: number, productName?: string }} options - Additional configuration for code generation.
  *
  * @return {Promise<object>} - Wavecell API json response. https://developer.wavecell.com/v1/api-documentation/verify-code-generation#response

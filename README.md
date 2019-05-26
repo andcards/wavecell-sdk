@@ -39,8 +39,7 @@ const smsTemplate = {
 };
 
 const accountConfig = {
-  accountId: "Your wavecell account id",
-  password: "Your wavecell account password",
+  apiKey: "ApiKey from customer portal",
   subAccountId: "Your wavecell sub account id"
 };
 
@@ -60,8 +59,10 @@ otpCodeSend("+3809399927332", smsTemplate, accountConfig).then(response => {
   - `encoding` - Character set to use for this SMS - The possible values are
     AUTO - GSM7 - UCS2. Default `AUTO`. (Optional)
 - `accountConfig` - Wavecell account credentials. (Required)
-  - `accountId` - Wavecell account id. (Required)
-  - `password` - Wavecell account password. (Required)
+  - `apiKey` - Api key from Wavecell customer portal.
+  - `accountId` - Wavecell account id. (Required if `apiKey` is not specified)
+  - `password` - Wavecell account password. (Required if `apiKey` is not
+    specified)
   - `subAccountId` - Wavecell sub account id. (Required)
 - `options` (Optional)
   - `codeLength` - Length of sended code. Default `4`. (Optional)
@@ -87,8 +88,7 @@ To verify otp received in SMS, use `otpCodeVerify`.
 import { otpCodeVerify, VERIFICATION_STATUS } from "wavecell-sdk";
 
 const accountConfig = {
-  accountId: "Your wavecell account id",
-  password: "Your wavecell account password",
+  apiKey: "ApiKey from customer portal",
   subAccountId: "Your wavecell sub account id"
 };
 
@@ -111,8 +111,10 @@ otpCodeVerify(otp, resourceUri, accountConfig).then(response => {
 - `resourceUri` - Uri for validating otp. Can be found in `otpCodeSend`
   response. (Required)
 - `accountConfig` - Wavecell account credentials. (Required)
-  - `accountId` - Wavecell account id. (Required)
-  - `password` - Wavecell account password. (Required)
+  - `apiKey` - Api key from Wavecell customer portal.
+  - `accountId` - Wavecell account id. (Required if `apiKey` is not specified)
+  - `password` - Wavecell account password. (Required if `apiKey` is not
+    specified)
 
 #### Response
 
