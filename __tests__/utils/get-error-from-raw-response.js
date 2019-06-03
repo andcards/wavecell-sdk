@@ -2,7 +2,9 @@ import { expect } from "chai";
 import {
   AUTH_FAILED_ERROR_TYPE,
   DESTINATION_NOT_VALID_ERROR_TYPE,
-  REQUEST_FAILED_ERROR_TYPE
+  OBJECT_NOT_FOUND_ERROR_TYPE,
+  REQUEST_FAILED_ERROR_TYPE,
+  RE_SENDING_NOT_ALLOWED_ERROR_TYPE
 } from "../../src/constants/error-types";
 import getErrorFromRawResponse from "../../src/utils/get-error-from-raw-response";
 
@@ -60,6 +62,44 @@ describe("utils/get-error-from-raw-response", () => {
       expect(error.statusCode).to.be.equal(400);
       expect(error.rawResponse).to.deep.equal({
         code: 1200,
+        foo: "bar"
+      });
+    });
+    it("should return OBJECT_NOT_FOUND_ERROR_TYPE if object was not found or already expired", () => {
+      const error = getErrorFromRawResponse(
+        {
+          code: 1300,
+          foo: "bar"
+        },
+        400
+      );
+      expect(error.constructor).to.be.equal(Error);
+      expect(error.type).to.be.equal(OBJECT_NOT_FOUND_ERROR_TYPE);
+      expect(error.message).to.be.equal(
+        "Object was not found or is already expired."
+      );
+      expect(error.statusCode).to.be.equal(400);
+      expect(error.rawResponse).to.deep.equal({
+        code: 1300,
+        foo: "bar"
+      });
+    });
+    it("should return RE_SENDING_NOT_ALLOWED_ERROR_TYPE if Re-sending to the same destination", () => {
+      const error = getErrorFromRawResponse(
+        {
+          code: 1400,
+          foo: "bar"
+        },
+        400
+      );
+      expect(error.constructor).to.be.equal(Error);
+      expect(error.type).to.be.equal(RE_SENDING_NOT_ALLOWED_ERROR_TYPE);
+      expect(error.message).to.be.equal(
+        "Re-sending to the same destination is not allowed."
+      );
+      expect(error.statusCode).to.be.equal(400);
+      expect(error.rawResponse).to.deep.equal({
+        code: 1400,
         foo: "bar"
       });
     });
