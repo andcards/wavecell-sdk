@@ -26,6 +26,10 @@ yarn add wavecell-sdk
 
 ## API
 
+- [otpCodeSend](#otpcodesend)
+- [otpCodeVerify](#otpcodeverify)
+- [Error Types](#error-types)
+
 ### otpCodeSend
 
 To generate OTP code and send it to your phone number, use `otpCodeSend`.
@@ -111,6 +115,36 @@ otpCodeVerify({
 
 Resolves with object, same to response body of Wavecell API.
 https://developer.wavecell.com/v1/api-documentation/verify-code-validation.
+
+### Error types
+
+Usage:
+
+```javascript
+import { ERROR_TYPES } from "wavecell-sdk";
+
+otpCodeVerify({
+  apiKey: "invalid api key",
+  otp: "OTP received in SMS",
+  resourceUri: "Resource uri received in otpCodeSend step"
+}).catch(error => {
+  if (error.type === ERROR_TYPES.AUTH_FAILED_ERROR_TYPE) {
+    console.warn("Authentication failed");
+  }
+});
+```
+
+Supported error types:
+
+| Error type                          | Explanation                                              |
+| ----------------------------------- | -------------------------------------------------------- |
+| `AUTH_FAILED_ERROR_TYPE`            | ApiKey, accountId, password or subAccountId is not valid |
+| `CONTENT_TYPE_NOT_VALID_ERROR_TYPE` | API response is not in json format                       |
+| `DESTINATION_NOT_VALID_ERROR_TYPE`  | Receiver of SMS is not valid                             |
+| `OBJECT_NOT_FOUND_ERROR_TYPE`       | Requested object not found or already expired            |
+| `RE_SENDING_NOT_ALLOWED_ERROR_TYPE` | Tried to send OTP code in restricted time period         |
+| `SMS_TEMPLATE_NOT_VALID_ERROR_TYPE` | SMS template is not provided or is not valid             |
+| `REQUEST_FAILED_ERROR_TYPE`         | Default error type                                       |
 
 ### License
 
