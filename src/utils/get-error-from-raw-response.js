@@ -1,7 +1,9 @@
 import {
   AUTH_FAILED_ERROR_TYPE,
   DESTINATION_NOT_VALID_ERROR_TYPE,
-  REQUEST_FAILED_ERROR_TYPE
+  REQUEST_FAILED_ERROR_TYPE,
+  OBJECT_NOT_FOUND_ERROR_TYPE,
+  RE_SENDING_NOT_ALLOWED_ERROR_TYPE
 } from "../constants/error-types";
 
 export default function getErrorFromRawResponse(json, statusCode) {
@@ -23,6 +25,22 @@ export default function getErrorFromRawResponse(json, statusCode) {
     case 1200: {
       const error = new Error("Request was not authenticated properly.");
       error.type = AUTH_FAILED_ERROR_TYPE;
+      error.statusCode = statusCode;
+      error.rawResponse = json;
+      return error;
+    }
+    case 1300: {
+      const error = new Error("Object was not found or is already expired.");
+      error.type = OBJECT_NOT_FOUND_ERROR_TYPE;
+      error.statusCode = statusCode;
+      error.rawResponse = json;
+      return error;
+    }
+    case 1400: {
+      const error = new Error(
+        "Re-sending to the same destination is not allowed."
+      );
+      error.type = RE_SENDING_NOT_ALLOWED_ERROR_TYPE;
       error.statusCode = statusCode;
       error.rawResponse = json;
       return error;
